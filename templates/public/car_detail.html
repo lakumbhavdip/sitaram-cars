@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ car.brand }} {{ car.model }} ({{ car.year }}) | {{ dealer_settings.dealership_name }}{% endblock %}
+
+{% block meta_description %}{{ car.brand }} {{ car.model }} {{ car.year }} for sale at Sitaram Cars. Price: ₹{{ car.price|floatformat:0 }}. Contact Yash Parmar at 6354895277.{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{% url 'public_home' %}" class="text-decoration-none text-muted">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'public_cars' %}" class="text-decoration-none text-muted">Cars</a></li>
+            <li class="breadcrumb-item active text-dark" aria-current="page">{{ car.brand }} {{ car.model }}</li>
+        </ol>
+    </nav>
+
+    <div class="row g-4">
+        <!-- Left Column: Gallery & Details -->
+        <div class="col-lg-8">
+            <!-- Main Image View -->
+            <div class="bg-white p-2 rounded-4 shadow-sm mb-3">
+                <div class="position-relative">
+                    {% if car.main_image %}
+                        <img id="carMainGalleryDisplay" src="{{ car.main_image.url }}" alt="{{ car.brand }} {{ car.model }}" class="main-detail-img shadow-sm">
+                    {% else %}
+                        <img id="carMainGalleryDisplay" src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80" alt="{{ car.brand }} {{ car.model }}" class="main-detail-img shadow-sm">
+                    {% endif %}
+
+                    {% if car.sold %}
+                        <div class="position-absolute top-0 start-0 m-3 badge bg-danger fs-6 px-3 py-2">SOLD OUT</div>
+                    {% endif %}
+                </div>
+
+                <!-- Thumbnails Gallery -->
+                {% if gallery_images or car.main_image %}
+                    <div class="row g-2 mt-2">
+                        {% if car.main_image %}
+                            <div class="col-3 col-sm-2">
+                                <img src="{{ car.main_image.url }}" class="thumb-img active" onclick="setMainGalleryImage('{{ car.main_image.url }}')" alt="Main image">
+                            </div>
+                        {% endif %}
+                        {% for img in gallery_images %}
+                            <div class="col-3 col-sm-2">
+                                <img src="{{ img.image.url }}" class="thumb-img" onclick="setMainGalleryImage('{{ img.image.url }}')" alt="Gallery image">
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Overview & Description -->
+            <div class="bg-white p-4 rounded-4 shadow-sm mb-4">
+                <h4 class="fw-bold text-dark mb-3">Vehicle Overview</h4>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-light text-center">
+                            <i class="bi bi-speedometer2 text-danger fs-3"></i>
+                            <div class="small text-muted mt-1">KM Driven</div>
+                            <div class="fw-bold text-dark">{{ car.km_driven }} km</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-light text-center">
+                            <i class="bi bi-fuel-pump text-primary fs-3"></i>
+                            <div class="small text-muted mt-1">Fuel Type</div>
+                            <div class="fw-bold text-dark">{{ car.fuel_type }}</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-light text-center">
+                            <i class="bi bi-gear text-success fs-3"></i>
+                            <div class="small text-muted mt-1">Transmission</div>
+                            <div class="fw-bold text-dark">{{ car.transmission }}</div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-3 bg-light text-center">
+                            <i class="bi bi-person text-warning fs-3"></i>
+                            <div class="small text-muted mt-1">Ownership</div>
+                            <div class="fw-bold text-dark">{{ car.owners }} Owner{% if car.owners > 1 %}s{% endif %}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold text-dark mb-3">Specifications</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped align-middle">
+                        <tbody>
+                            <tr>
+                                <th class="w-33 bg-light text-secondary">Brand</th>
+                                <td class="fw-semibold">{{ car.brand }}</td>
+                                <th class="w-33 bg-light text-secondary">Model</th>
+                                <td class="fw-semibold">{{ car.model }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light text-secondary">Manufacturing Year</th>
+                                <td class="fw-semibold">{{ car.year }}</td>
+                                <th class="bg-light text-secondary">Registration Year</th>
+                                <td class="fw-semibold">{{ car.registration_year|default:car.year }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light text-secondary">Color</th>
+                                <td class="fw-semibold">{{ car.color|default:"Not Specified" }}</td>
+                                <th class="bg-light text-secondary">Location</th>
+                                <td class="fw-semibold">{{ car.location }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light text-secondary">Insurance Valid</th>
+                                <td class="fw-semibold">
+                                    {% if car.insurance_valid %}
+                                        <span class="badge bg-success"><i class="bi bi-shield-check"></i> Yes</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary"><i class="bi bi-shield-x"></i> No</span>
+                                    {% endif %}
+                                </td>
+                                <th class="bg-light text-secondary">Price Negotiable</th>
+                                <td class="fw-semibold">
+                                    {% if car.price_negotiable %}
+                                        <span class="badge bg-primary">Yes (Negotiable)</span>
+                                    {% else %}
+                                        <span class="badge bg-dark">Fixed Price</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if car.description %}
+                    <h5 class="fw-bold text-dark mt-4 mb-2">Description</h5>
+                    <p class="text-secondary style-description" style="white-space: pre-line;">{{ car.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Column: Price Tag & Contact Form -->
+        <div class="col-lg-4">
+            <!-- Price & Dealer Sticky Card -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <span class="text-uppercase small fw-bold text-muted">Asking Price</span>
+                    <div class="d-flex align-items-center gap-2 my-1">
+                        <h2 class="display-6 fw-extrabold text-dark m-0">₹{{ car.price|floatformat:0 }}</h2>
+                        {% if car.price_negotiable %}
+                            <span class="badge bg-primary">Negotiable</span>
+                        {% endif %}
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center fw-bold fs-4" style="width: 48px; height: 48px;">
+                            YP
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark">{{ dealer_settings.contact_name }}</div>
+                            <small class="text-muted">{{ dealer_settings.dealership_name }}</small>
+                        </div>
+                    </div>
+
+                    <!-- Direct Actions -->
+                    <div class="d-grid gap-2">
+                        <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger btn-lg fw-bold py-3">
+                            <i class="bi bi-telephone-fill me-2"></i> Call Now: {{ dealer_settings.phone }}
+                        </a>
+                        <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}?text=Hello%20Sitaram%20Cars%2C%20I%20am%20interested%20in%20the%20{{ car.brand|urlencode }}%20{{ car.model|urlencode }}%20listed%20on%20your%20website.%20Please%20share%20more%20details." 
+                           target="_blank" 
+                           class="btn btn-success btn-lg fw-bold py-3">
+                            <i class="bi bi-whatsapp me-2"></i> WhatsApp Enquiry
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Embedded Inquiry Form (NO forms.py) -->
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                    <h5 class="fw-bold text-dark m-0">Send Direct Enquiry</h5>
+                    <small class="text-muted">Fill out your details to get a callback from Yash Parmar</small>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'public_car_detail' slug=car.slug %}">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" required placeholder="Enter full name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Phone Number <span class="text-danger">*</span></label>
+                            <input type="text" name="phone" class="form-control" required placeholder="Enter 10-digit mobile number">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="Optional">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Message <span class="text-danger">*</span></label>
+                            <textarea name="message" class="form-control" rows="3" required>Hello, I am interested in the {{ car.brand }} {{ car.model }} ({{ car.year }}). Please contact me with more information.</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 fw-bold py-2">
+                            <i class="bi bi-send-fill me-1"></i> Send Enquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

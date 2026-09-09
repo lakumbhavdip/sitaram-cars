@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Browse Used Cars | {{ dealer_settings.dealership_name }}{% endblock %}
+
+{% block content %}
+<div class="bg-dark text-white py-4 mb-4 border-bottom border-danger border-3">
+    <div class="container">
+        <h1 class="fw-bold m-0">Browse All Cars</h1>
+        <p class="text-secondary m-0">Find certified pre-owned cars at Sitaram Cars</p>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <!-- Sidebar Filter Panel -->
+        <div class="col-lg-3">
+            <div class="card border-0 shadow-sm rounded-4 sticky-lg-top mb-3 mb-lg-0" style="top: 90px; z-index: 10;">
+                <div class="card-header bg-white py-3 border-0 d-flex align-items-center justify-content-between">
+                    <h5 class="fw-bold m-0 text-dark d-flex align-items-center gap-2">
+                        <i class="bi bi-funnel-fill text-danger"></i> Filters
+                    </h5>
+                    <div>
+                        <a href="{% url 'public_cars' %}" class="btn btn-sm btn-link text-decoration-none text-muted p-0 me-2">Reset</a>
+                        <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileFilterCollapse" aria-expanded="false" aria-controls="mobileFilterCollapse">
+                            <i class="bi bi-sliders me-1"></i> Toggle
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body pt-0 collapse d-lg-block" id="mobileFilterCollapse">
+                    <form method="GET" action="{% url 'public_cars' %}">
+                        <!-- Keyword Search -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Search Keyword</label>
+                            <div class="input-group">
+                                <input type="text" name="q" value="{{ q }}" class="form-control form-control-sm" placeholder="Brand, model...">
+                                <button class="btn btn-outline-secondary btn-sm" type="submit"><i class="bi bi-search"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Brand -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Brand</label>
+                            <select name="brand" class="form-select form-select-sm">
+                                <option value="">All Brands</option>
+                                {% for b in brands %}
+                                    <option value="{{ b }}" {% if selected_brand == b %}selected{% endif %}>{{ b }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Model -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Model</label>
+                            <input type="text" name="model" value="{{ selected_model }}" class="form-control form-control-sm" placeholder="e.g. Swift">
+                        </div>
+
+                        <!-- Fuel Type -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Fuel Type</label>
+                            <select name="fuel_type" class="form-select form-select-sm">
+                                <option value="">Any Fuel</option>
+                                <option value="Petrol" {% if selected_fuel == 'Petrol' %}selected{% endif %}>Petrol</option>
+                                <option value="Diesel" {% if selected_fuel == 'Diesel' %}selected{% endif %}>Diesel</option>
+                                <option value="Petrol + CNG" {% if selected_fuel == 'Petrol + CNG' %}selected{% endif %}>Petrol + CNG</option>
+                                <option value="Electric" {% if selected_fuel == 'Electric' %}selected{% endif %}>Electric</option>
+                                <option value="Hybrid" {% if selected_fuel == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+                            </select>
+                        </div>
+
+                        <!-- Transmission -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Transmission</label>
+                            <select name="transmission" class="form-select form-select-sm">
+                                <option value="">Any Transmission</option>
+                                <option value="Manual" {% if selected_transmission == 'Manual' %}selected{% endif %}>Manual</option>
+                                <option value="Automatic" {% if selected_transmission == 'Automatic' %}selected{% endif %}>Automatic</option>
+                                <option value="AMT" {% if selected_transmission == 'AMT' %}selected{% endif %}>AMT</option>
+                                <option value="CVT" {% if selected_transmission == 'CVT' %}selected{% endif %}>CVT</option>
+                                <option value="DCT" {% if selected_transmission == 'DCT' %}selected{% endif %}>DCT</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Price Range (₹)</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" name="min_price" value="{{ min_price }}" class="form-control form-control-sm" placeholder="Min">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" name="max_price" value="{{ max_price }}" class="form-control form-control-sm" placeholder="Max">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sorting -->
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-secondary">Sort By</label>
+                            <select name="sort" class="form-select form-select-sm">
+                                <option value="newest" {% if selected_sort == 'newest' %}selected{% endif %}>Newest Listed</option>
+                                <option value="price_low" {% if selected_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                                <option value="price_high" {% if selected_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                                <option value="year_new" {% if selected_sort == 'year_new' %}selected{% endif %}>Newest Model Year</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold py-2 mt-2">
+                            <i class="bi bi-filter me-1"></i> Apply Filters
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Car Grid -->
+        <div class="col-lg-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted small">
+                    Showing <strong>{{ page_obj.paginator.count }}</strong> car{% if page_obj.paginator.count != 1 %}s{% endif %}
+                </span>
+            </div>
+
+            {% if page_obj %}
+                <div class="row g-4">
+                    {% for car in page_obj %}
+                        <div class="col-md-6 col-lg-4">
+                            {% include 'components/car_card.html' with car=car %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% include 'components/pagination.html' with page_obj=page_obj %}
+            {% else %}
+                <!-- Empty state required by specs -->
+                <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-secondary border-opacity-10 my-4">
+                    <i class="bi bi-car-front display-1 text-muted"></i>
+                    <h3 class="fw-bold text-dark mt-3">No cars available right now matching your criteria.</h3>
+                    <p class="text-muted lead">Please check back soon or contact Sitaram Cars directly.</p>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <a href="{% url 'public_cars' %}" class="btn btn-outline-secondary fw-bold">Reset Filters</a>
+                        <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger fw-bold">
+                            <i class="bi bi-telephone-fill me-1"></i> Call Yash Parmar
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

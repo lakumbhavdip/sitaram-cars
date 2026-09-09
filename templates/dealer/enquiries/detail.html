@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Enquiry Details | Dealer Portal{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="dealer-wrapper">
+    {% include 'components/sidebar.html' %}
+
+    <div class="dealer-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark m-0">Enquiry Details</h2>
+                <small class="text-muted">Received on {{ enquiry.created_at|date:"F d, Y at h:i A" }}</small>
+            </div>
+            <a href="{% url 'dealer_enquiry_list' %}" class="btn btn-outline-secondary fw-bold">
+                <i class="bi bi-arrow-left me-1"></i> Back to Enquiries
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                    <h5 class="fw-bold text-dark mb-3">Customer Information</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="text-muted small">Customer Name</label>
+                            <div class="fw-bold fs-5 text-dark">{{ enquiry.name }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Phone Number</label>
+                            <div>
+                                <a href="tel:{{ enquiry.phone }}" class="fw-bold fs-5 text-danger text-decoration-none">
+                                    <i class="bi bi-telephone-fill me-1"></i> {{ enquiry.phone }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Email Address</label>
+                            <div class="fw-semibold text-dark">{{ enquiry.email|default:"Not Provided" }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted small">Target Car</label>
+                            <div>
+                                {% if enquiry.car %}
+                                    <a href="{% url 'public_car_detail' slug=enquiry.car.slug %}" target="_blank" class="fw-bold text-primary">
+                                        {{ enquiry.car.brand }} {{ enquiry.car.model }} ({{ enquiry.car.year }}) - ₹{{ enquiry.car.price|floatformat:0 }}
+                                    </a>
+                                {% else %}
+                                    <span class="badge bg-light text-dark border">General Dealership Inquiry</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold text-dark mb-2">Inquiry Message</h5>
+                    <div class="p-3 bg-light rounded-3 text-dark style-description" style="white-space: pre-line;">
+                        {{ enquiry.message }}
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="tel:{{ enquiry.phone }}" class="btn btn-danger fw-bold px-4">
+                            <i class="bi bi-telephone-fill me-1"></i> Call Customer
+                        </a>
+                        <a href="https://wa.me/91{{ enquiry.phone }}?text=Hello%20{{ enquiry.name|urlencode }}%2C%20this%20is%20Yash%20Parmar%20from%20Sitaram%20Cars%20regarding%20your%20enquiry." target="_blank" class="btn btn-success fw-bold px-4">
+                            <i class="bi bi-whatsapp me-1"></i> Reply on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <h5 class="fw-bold text-dark mb-3">Update Lead Status</h5>
+                    
+                    <!-- HTML/Jinja Form (NO FORMS.PY) -->
+                    <form method="POST" action="{% url 'dealer_enquiry_detail' pk=enquiry.pk %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="New" {% if enquiry.status == 'New' %}selected{% endif %}>New</option>
+                                <option value="Contacted" {% if enquiry.status == 'Contacted' %}selected{% endif %}>Contacted</option>
+                                <option value="Closed" {% if enquiry.status == 'Closed' %}selected{% endif %}>Closed</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 fw-bold py-2">
+                            Update Status
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

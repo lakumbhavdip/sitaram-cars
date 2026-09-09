@@ -1,0 +1,48 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'public_home' %}">
+            {% if dealer_settings.logo %}
+                <img src="{{ dealer_settings.logo.url }}" alt="{{ dealer_settings.dealership_name }}" height="36" class="rounded">
+            {% else %}
+                <i class="bi bi-car-front-fill text-danger fs-3"></i>
+            {% endif %}
+            <span>{{ dealer_settings.dealership_name }}</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav me-auto mb-3 mb-lg-0 ms-lg-4">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'public_home' %}active{% endif %}" href="{% url 'public_home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'public_cars' %}active{% endif %}" href="{% url 'public_cars' %}">Cars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'public_about' %}active{% endif %}" href="{% url 'public_about' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'public_contact' %}active{% endif %}" href="{% url 'public_contact' %}">Contact</a>
+                </li>
+            </ul>
+
+            <div class="d-flex flex-column flex-lg-row align-items-stretch align-items-lg-center gap-2 pt-2 pt-lg-0 border-top border-secondary border-opacity-25 border-lg-0">
+                <a href="tel:{{ dealer_settings.phone }}" class="btn btn-outline-light btn-sm rounded-pill px-3 fw-semibold text-center">
+                    <i class="bi bi-telephone-fill me-1"></i> Call {{ dealer_settings.phone }}
+                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dealer_dashboard' %}" class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold text-center">
+                        <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                    </a>
+                {% else %}
+                    <a href="{% url 'dealer_login' %}" class="btn btn-outline-secondary btn-sm text-white rounded-pill px-3 fw-semibold text-center">
+                        <i class="bi bi-lock-fill me-1"></i> Dealer Login
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

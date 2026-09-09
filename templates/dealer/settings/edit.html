@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dealership Settings | Dealer Portal{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="dealer-wrapper">
+    {% include 'components/sidebar.html' %}
+
+    <div class="dealer-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark m-0">Dealership Settings</h2>
+                <small class="text-muted">Update Sitaram Cars public contact & profile information</small>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4" style="max-width: 800px;">
+            <!-- HTML/Jinja Form (NO FORMS.PY) -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <h5 class="fw-bold text-danger border-bottom pb-2 mb-3">1. Business Profile</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Dealership Name</label>
+                        <input type="text" name="dealership_name" value="{{ dealer_settings_obj.dealership_name }}" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Contact Person Name</label>
+                        <input type="text" name="contact_name" value="{{ dealer_settings_obj.contact_name }}" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Phone Number</label>
+                        <input type="text" name="phone" value="{{ dealer_settings_obj.phone }}" class="form-control" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">WhatsApp Number (With Country Code)</label>
+                        <input type="text" name="whatsapp_number" value="{{ dealer_settings_obj.whatsapp_number }}" class="form-control" required>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold text-danger border-bottom pb-2 mb-3">2. About & Branding</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">About Dealership Text</label>
+                        <textarea name="about_text" class="form-control" rows="4" required>{{ dealer_settings_obj.about_text }}</textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Upload Dealership Logo</label>
+                        <input type="file" name="logo" accept="image/*" class="form-control">
+                        {% if dealer_settings_obj.logo %}
+                            <div class="mt-2">
+                                <small class="text-muted d-block">Current Logo:</small>
+                                <img src="{{ dealer_settings_obj.logo.url }}" class="img-thumbnail" style="height: 60px;">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Upload Dealer Photo (Yash Parmar)</label>
+                        <input type="file" name="dealer_image" accept="image/*" class="form-control">
+                        {% if dealer_settings_obj.dealer_image %}
+                            <div class="mt-2">
+                                <small class="text-muted d-block">Current Photo:</small>
+                                <img src="{{ dealer_settings_obj.dealer_image.url }}" class="img-thumbnail" style="height: 80px; object-fit: cover;">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-danger btn-lg px-5 fw-bold shadow-sm">
+                        <i class="bi bi-check-lg me-1"></i> Save Settings
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

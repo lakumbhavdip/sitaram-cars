@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dealer Login | {{ dealer_settings.dealership_name }}{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-dark py-5">
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 420px; width: 100%;">
+        <div class="card-header bg-danger text-white text-center p-4 border-0">
+            <i class="bi bi-shield-lock-fill display-4"></i>
+            <h3 class="fw-bold mt-2 mb-0">{{ dealer_settings.dealership_name }}</h3>
+            <small class="text-white-50">Dealer Management Portal</small>
+        </div>
+
+        <div class="card-body p-4 bg-white">
+            {% include 'components/messages.html' %}
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-secondary">Username</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
+                        <input type="text" name="username" value="{{ old_username|default:'' }}" class="form-control" placeholder="Enter username" required autofocus>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold small text-secondary">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="bi bi-lock-fill"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-danger w-100 fw-bold py-2 shadow-sm">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Login to Dashboard
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'public_home' %}" class="text-secondary small text-decoration-none">
+                    <i class="bi bi-arrow-left"></i> Back to Public Website
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

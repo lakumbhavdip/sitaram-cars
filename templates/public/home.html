@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ dealer_settings.dealership_name }} | Find Your Perfect Pre-Owned Car{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-banner text-center text-md-start">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <span class="badge bg-danger text-uppercase px-3 py-2 fw-bold mb-3 tracking-wide">
+                    Certified Pre-Owned Cars
+                </span>
+                <h1 class="hero-title text-white">Find Your Perfect Car</h1>
+                <p class="hero-subtitle">Quality Cars. Great Deals. Trusted Service.</p>
+                <div class="d-flex flex-wrap gap-3 mt-4 justify-content-center justify-content-md-start">
+                    <a href="{% url 'public_cars' %}" class="btn btn-danger btn-lg px-4 fw-bold rounded-pill shadow">
+                        <i class="bi bi-car-front-fill me-2"></i> Browse Cars
+                    </a>
+                    <a href="{% url 'public_contact' %}" class="btn btn-outline-light btn-lg px-4 fw-bold rounded-pill">
+                        <i class="bi bi-envelope-fill me-2"></i> Contact Us
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Cars Form (NO forms.py) -->
+<div class="container">
+    <div class="search-card">
+        <form method="GET" action="{% url 'public_cars' %}">
+            <div class="row g-2 g-md-3">
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label small fw-bold text-secondary">Brand</label>
+                    <select name="brand" class="form-select form-select-sm">
+                        <option value="">All Brands</option>
+                        {% for b in brands %}
+                            <option value="{{ b }}">{{ b }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label small fw-bold text-secondary">Model</label>
+                    <input type="text" name="model" class="form-control form-control-sm" placeholder="e.g. Swift">
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label small fw-bold text-secondary">Fuel Type</label>
+                    <select name="fuel_type" class="form-select form-select-sm">
+                        <option value="">Any Fuel</option>
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Petrol + CNG">Petrol + CNG</option>
+                        <option value="Electric">Electric</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label small fw-bold text-secondary">Transmission</label>
+                    <select name="transmission" class="form-select form-select-sm">
+                        <option value="">Any Transmission</option>
+                        <option value="Manual">Manual</option>
+                        <option value="Automatic">Automatic</option>
+                        <option value="AMT">AMT</option>
+                        <option value="CVT">CVT</option>
+                        <option value="DCT">DCT</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                    <label class="form-label small fw-bold text-secondary">Max Price (₹)</label>
+                    <input type="number" name="max_price" class="form-control form-control-sm" placeholder="e.g. 800000">
+                </div>
+                <div class="col-6 col-md-4 col-lg-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold py-2">
+                        <i class="bi bi-search me-1"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Active Advertisements Carousel -->
+{% if active_ads %}
+<section class="container my-4 my-md-5">
+    <div id="promoCarousel" class="carousel slide shadow-sm rounded-4 overflow-hidden" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for ad in active_ads %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <div class="p-4 p-md-5 text-white" style="background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 100%); min-height: 200px;">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h3 class="fw-bold mb-2">{{ ad.title }}</h3>
+                                {% if ad.subtitle %}
+                                    <p class="lead fs-6 mb-3 opacity-90">{{ ad.subtitle }}</p>
+                                {% endif %}
+                                {% if ad.button_url %}
+                                    <a href="{{ ad.button_url }}" class="btn btn-light text-dark btn-sm fw-bold px-3 rounded-pill">
+                                        {{ ad.button_text|default:"View Offer" }} <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            {% if ad.image %}
+                                <div class="col-md-4 text-center d-none d-md-block">
+                                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="img-fluid rounded-3 shadow" style="max-height: 160px;">
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% if active_ads.count > 1 %}
+            <button class="carousel-control-prev" type="button" data-bs-target="#promoCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#promoCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Available Cars Section -->
+<section class="container my-4 my-md-5">
+    <div class="d-flex justify-content-between align-items-end mb-3 mb-md-4">
+        <div>
+            <h6 class="text-danger fw-bold text-uppercase tracking-wider mb-1">Our Collection</h6>
+            <h2 class="fw-bold text-dark mb-0 fs-3">Featured Cars</h2>
+        </div>
+        <a href="{% url 'public_cars' %}" class="btn btn-outline-danger btn-sm fw-bold rounded-pill">
+            View All <i class="bi bi-arrow-right ms-1"></i>
+        </a>
+    </div>
+
+    {% if recent_cars %}
+        <div class="row g-3 g-md-4">
+            {% for car in recent_cars %}
+                <div class="col-12 col-sm-6 col-lg-4">
+                    {% include 'components/car_card.html' with car=car %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-secondary border-opacity-10">
+            <i class="bi bi-car-front display-3 text-muted"></i>
+            <h4 class="fw-bold mt-3">No cars available right now.</h4>
+            <p class="text-muted">Please check back soon or contact Sitaram Cars directly.</p>
+            <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger fw-bold mt-2">
+                <i class="bi bi-telephone-fill me-1"></i> Call Yash Parmar
+            </a>
+        </div>
+    {% endif %}
+</section>
+
+<!-- Why Choose Sitaram Cars -->
+<section class="bg-white py-4 py-md-5 my-4 my-md-5 border-top border-bottom border-secondary border-opacity-10">
+    <div class="container">
+        <div class="text-center mb-4 mb-md-5">
+            <h6 class="text-danger fw-bold text-uppercase">Why Sitaram Cars</h6>
+            <h2 class="fw-bold text-dark fs-3">Why Buy From Us?</h2>
+        </div>
+
+        <div class="row g-3 g-md-4">
+            <div class="col-6 col-md-3 text-center">
+                <div class="p-3 p-md-4 rounded-4 bg-light h-100">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-danger text-white rounded-circle mb-2 mb-md-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-shield-check fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Quality Cars</h6>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Inspected pre-owned vehicles tested for safety.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3 text-center">
+                <div class="p-3 p-md-4 rounded-4 bg-light h-100">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle mb-2 mb-md-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-cash-stack fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Transparent Deals</h6>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Honest pricing with no hidden charges.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3 text-center">
+                <div class="p-3 p-md-4 rounded-4 bg-light h-100">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle mb-2 mb-md-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-chat-quote fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Easy Enquiry</h6>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Direct phone & WhatsApp support.</p>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3 text-center">
+                <div class="p-3 p-md-4 rounded-4 bg-light h-100">
+                    <div class="d-inline-flex align-items-center justify-content-center bg-warning text-white rounded-circle mb-2 mb-md-3" style="width: 50px; height: 50px;">
+                        <i class="bi bi-person-heart fs-4"></i>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Helpful Service</h6>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Personal guidance from Yash Parmar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dealer Section -->
+<section class="container my-4 my-md-5">
+    <div class="bg-dark text-white rounded-4 p-4 p-md-5 shadow-lg position-relative overflow-hidden">
+        <div class="row align-items-center position-relative z-1">
+            <div class="col-lg-7">
+                <span class="badge bg-danger text-uppercase px-3 py-2 fw-bold mb-2">Owner & Founder</span>
+                <h2 class="display-6 fw-bold mb-1 fs-3">{{ dealer_settings.dealership_name }}</h2>
+                <h4 class="text-danger fw-bold mb-3 fs-5">{{ dealer_settings.contact_name }}</h4>
+                <p class="lead text-light mb-4 fs-6">
+                    Contact us today for buying, selling, or evaluating certified pre-owned cars in Bhavnagar & Gujarat.
+                </p>
+                <div class="d-flex flex-wrap gap-2 gap-md-3">
+                    <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
+                        <i class="bi bi-telephone-fill me-1"></i> Call: {{ dealer_settings.phone }}
+                    </a>
+                    <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="btn btn-success btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
+                        <i class="bi bi-whatsapp me-1"></i> WhatsApp
+                    </a>
+                    <a href="{% url 'public_cars' %}" class="btn btn-outline-light btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
+                        View Cars
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                {% if dealer_settings.dealer_image %}
+                    <img src="{{ dealer_settings.dealer_image.url }}" alt="{{ dealer_settings.contact_name }}" class="img-fluid rounded-4 shadow border border-3 border-danger" style="max-height: 240px; object-fit: cover;">
+                {% else %}
+                    <div class="p-3 p-md-4 rounded-4 bg-secondary bg-opacity-25 border border-secondary d-inline-block">
+                        <i class="bi bi-person-bounding-box display-3 text-danger"></i>
+                        <div class="fw-bold mt-2 fs-6">{{ dealer_settings.contact_name }}</div>
+                        <div class="text-muted small">{{ dealer_settings.dealership_name }}</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact CTA Section -->
+<section class="container my-4 my-md-5 text-center">
+    <div class="p-4 p-md-5 bg-white rounded-4 shadow-sm border border-secondary border-opacity-10">
+        <h3 class="fw-bold text-dark mb-2">Looking for your next car?</h3>
+        <p class="text-muted fs-6 mb-3">Contact Sitaram Cars today and drive home your dream car with confidence.</p>
+        <a href="{% url 'public_contact' %}" class="btn btn-danger px-4 px-md-5 fw-bold rounded-pill shadow-sm">
+            <i class="bi bi-envelope-fill me-2"></i> Get in Touch
+        </a>
+    </div>
+</section>
+{% endblock %}

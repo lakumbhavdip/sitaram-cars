@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Add New Car | Dealer Portal{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="dealer-wrapper">
+    {% include 'components/sidebar.html' %}
+
+    <div class="dealer-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark m-0">Add New Car</h2>
+                <small class="text-muted">Enter vehicle details to publish on Sitaram Cars</small>
+            </div>
+            <a href="{% url 'dealer_car_list' %}" class="btn btn-outline-secondary fw-bold">
+                <i class="bi bi-arrow-left me-1"></i> Back to Inventory
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+            <!-- HTML/Jinja Form (STRICT NO FORMS.PY MANDATE) -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <h5 class="fw-bold text-danger border-bottom pb-2 mb-3">1. Basic Information</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Brand <span class="text-danger">*</span></label>
+                        <input type="text" name="brand" value="{{ old_data.brand|default:'' }}" class="form-control" placeholder="e.g. Maruti Suzuki, Hyundai" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Model <span class="text-danger">*</span></label>
+                        <input type="text" name="model" value="{{ old_data.model|default:'' }}" class="form-control" placeholder="e.g. Swift VXI, Creta" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold small">Manufacturing Year <span class="text-danger">*</span></label>
+                        <input type="number" name="year" value="{{ old_data.year|default:'2021' }}" class="form-control" placeholder="2021" required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold small">Registration Year</label>
+                        <input type="number" name="registration_year" value="{{ old_data.registration_year|default:'' }}" class="form-control" placeholder="2021">
+                    </div>
+                </div>
+
+                <h5 class="fw-bold text-danger border-bottom pb-2 mb-3">2. Pricing & Specs</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Price Amount (₹) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" name="price" value="{{ old_data.price|default:'' }}" class="form-control" placeholder="e.g. 450000" required>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-center pt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="price_negotiable" id="price_negotiable" checked>
+                            <label class="form-check-label fw-semibold" for="price_negotiable">Price Negotiable</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small">Kilometers Driven <span class="text-danger">*</span></label>
+                        <input type="number" name="km_driven" value="{{ old_data.km_driven|default:'' }}" class="form-control" placeholder="e.g. 35000" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small">Fuel Type</label>
+                        <select name="fuel_type" class="form-select">
+                            <option value="Petrol" {% if old_data.fuel_type == 'Petrol' %}selected{% endif %}>Petrol</option>
+                            <option value="Diesel" {% if old_data.fuel_type == 'Diesel' %}selected{% endif %}>Diesel</option>
+                            <option value="Petrol + CNG" {% if old_data.fuel_type == 'Petrol + CNG' %}selected{% endif %}>Petrol + CNG</option>
+                            <option value="Electric" {% if old_data.fuel_type == 'Electric' %}selected{% endif %}>Electric</option>
+                            <option value="Hybrid" {% if old_data.fuel_type == 'Hybrid' %}selected{% endif %}>Hybrid</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small">Transmission</label>
+                        <select name="transmission" class="form-select">
+                            <option value="Manual" {% if old_data.transmission == 'Manual' %}selected{% endif %}>Manual</option>
+                            <option value="Automatic" {% if old_data.transmission == 'Automatic' %}selected{% endif %}>Automatic</option>
+                            <option value="AMT" {% if old_data.transmission == 'AMT' %}selected{% endif %}>AMT</option>
+                            <option value="CVT" {% if old_data.transmission == 'CVT' %}selected{% endif %}>CVT</option>
+                            <option value="DCT" {% if old_data.transmission == 'DCT' %}selected{% endif %}>DCT</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small">Color</label>
+                        <input type="text" name="color" value="{{ old_data.color|default:'' }}" class="form-control" placeholder="e.g. White, Silver">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold small">Number of Owners</label>
+                        <input type="number" name="owners" value="{{ old_data.owners|default:'1' }}" class="form-control" min="1">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small">Location</label>
+                        <input type="text" name="location" value="{{ old_data.location|default:'Bhavnagar, Gujarat' }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-center pt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="insurance_valid" id="insurance_valid" checked>
+                            <label class="form-check-label fw-semibold" for="insurance_valid">Insurance Valid (Yes/No)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold text-danger border-bottom pb-2 mb-3">3. Images & Description</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Main Display Image</label>
+                        <input type="file" name="main_image" id="main_image" accept="image/*" class="form-control">
+                        <div class="mt-2">
+                            <img id="main_image_preview" src="" class="img-thumbnail d-none" style="height: 120px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Additional Gallery Images (Multiple)</label>
+                        <input type="file" name="images" id="images" accept="image/*" multiple class="form-control">
+                        <div id="gallery_previews" class="row mt-2"></div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-bold small">Description / Additional Notes</label>
+                        <textarea name="description" class="form-control" rows="5" placeholder="Enter vehicle condition, service history, key features, etc.">{% if old_data.description %}{{ old_data.description }}{% else %}✅ Genuine Car
+✅ Company Service Record
+✅ Loan Facility Available (If Applicable){% endif %}</textarea>
+                    </div>
+                </div>
+
+                <h5 class="fw-bold text-danger border-bottom pb-2 mb-3">4. Status & Publishing</h5>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Publishing Status</label>
+                        <select name="published" class="form-select fw-bold">
+                            <option value="true" selected>✅ Published (Visible on Public Website)</option>
+                            <option value="false">❌ Draft (Hidden from Public)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-end">
+                        <div class="form-check form-switch pb-2">
+                            <input class="form-check-input" type="checkbox" name="sold" id="sold" value="on">
+                            <label class="form-check-label fw-bold text-danger" for="sold">Mark as Sold Out</label>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-end gap-3">
+                    <a href="{% url 'dealer_car_list' %}" class="btn btn-outline-secondary px-4 fw-bold">Cancel</a>
+                    <button type="submit" class="btn btn-danger btn-lg px-5 fw-bold shadow-sm">
+                        <i class="bi bi-check-lg me-1"></i> Save Car
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

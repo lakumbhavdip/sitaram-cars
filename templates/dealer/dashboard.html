@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dealer Dashboard | {{ dealer_settings.dealership_name }}{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="dealer-wrapper">
+    {% include 'components/sidebar.html' %}
+
+    <div class="dealer-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark m-0">Dashboard Overview</h2>
+                <small class="text-muted">Welcome back to Sitaram Cars Management Panel</small>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="{% url 'dealer_car_create' %}" class="btn btn-danger fw-bold shadow-sm">
+                    <i class="bi bi-plus-lg me-1"></i> Add Car
+                </a>
+                <a href="{% url 'public_home' %}" target="_blank" class="btn btn-outline-secondary fw-bold">
+                    <i class="bi bi-box-arrow-up-right me-1"></i> View Website
+                </a>
+            </div>
+        </div>
+
+        <!-- Metric Cards Grid -->
+        <div class="row g-2 g-md-3 mb-4">
+            <div class="col-6 col-md-4 col-xl-2">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Total Cars</div>
+                            <div class="fs-3 fw-bold text-dark">{{ total_cars }}</div>
+                        </div>
+                        <div class="p-2 p-md-3 bg-primary bg-opacity-10 text-primary rounded-circle">
+                            <i class="bi bi-car-front fs-4 fs-md-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-2">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Published</div>
+                            <div class="fs-3 fw-bold text-success">{{ published_cars }}</div>
+                        </div>
+                        <div class="p-2 p-md-3 bg-success bg-opacity-10 text-success rounded-circle">
+                            <i class="bi bi-check-circle fs-4 fs-md-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-2">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Sold Cars</div>
+                            <div class="fs-3 fw-bold text-danger">{{ sold_cars }}</div>
+                        </div>
+                        <div class="p-2 p-md-3 bg-danger bg-opacity-10 text-danger rounded-circle">
+                            <i class="bi bi-tag-fill fs-4 fs-md-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-xl-3">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Enquiries</div>
+                            <div class="fs-3 fw-bold text-warning">{{ total_enquiries }}</div>
+                            <small class="text-danger fw-bold d-block" style="font-size: 0.7rem;">{{ new_enquiries_count }} New</small>
+                        </div>
+                        <div class="p-2 p-md-3 bg-warning bg-opacity-10 text-warning rounded-circle">
+                            <i class="bi bi-chat-dots fs-4 fs-md-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 col-xl-3">
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 h-100">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <div class="small text-muted fw-bold text-uppercase" style="font-size: 0.7rem;">Active Ads</div>
+                            <div class="fs-3 fw-bold text-info">{{ active_ads_count }}</div>
+                        </div>
+                        <div class="p-2 p-md-3 bg-info bg-opacity-10 text-info rounded-circle">
+                            <i class="bi bi-megaphone fs-4 fs-md-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Row -->
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-4">
+            <h6 class="fw-bold text-secondary text-uppercase mb-3">Quick Navigation</h6>
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{% url 'dealer_car_create' %}" class="btn btn-outline-danger btn-sm fw-bold">
+                    <i class="bi bi-plus-lg me-1"></i> Add Car
+                </a>
+                <a href="{% url 'dealer_car_list' %}" class="btn btn-outline-primary btn-sm fw-bold">
+                    <i class="bi bi-list-ul me-1"></i> Manage Cars
+                </a>
+                <a href="{% url 'dealer_ad_create' %}" class="btn btn-outline-success btn-sm fw-bold">
+                    <i class="bi bi-plus-circle me-1"></i> Add Advertisement
+                </a>
+                <a href="{% url 'dealer_ad_list' %}" class="btn btn-outline-info btn-sm fw-bold">
+                    <i class="bi bi-megaphone me-1"></i> Manage Advertisements
+                </a>
+                <a href="{% url 'dealer_enquiry_list' %}" class="btn btn-outline-warning text-dark btn-sm fw-bold">
+                    <i class="bi bi-chat-left-text me-1"></i> Enquiries
+                </a>
+                <a href="{% url 'dealer_settings_edit' %}" class="btn btn-outline-dark btn-sm fw-bold">
+                    <i class="bi bi-gear me-1"></i> Settings
+                </a>
+            </div>
+        </div>
+
+        <!-- Recent Tables Row -->
+        <div class="row g-4">
+            <!-- Recently Added Cars -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm rounded-4 bg-white h-100">
+                    <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold m-0 text-dark">Recent Cars</h5>
+                        <a href="{% url 'dealer_car_list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold">View All</a>
+                    </div>
+                    <div class="table-responsive px-3 pb-3">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light small">
+                                <tr>
+                                    <th>Car</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for car in recent_cars %}
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold text-dark">{{ car.brand }} {{ car.model }}</div>
+                                            <small class="text-muted">{{ car.year }} &bull; {{ car.fuel_type }}</small>
+                                        </td>
+                                        <td class="fw-bold">₹{{ car.price|floatformat:0 }}</td>
+                                        <td>
+                                            {% if car.sold %}
+                                                <span class="badge bg-danger">Sold</span>
+                                            {% elif car.published %}
+                                                <span class="badge bg-success">Published</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Draft</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'dealer_car_edit' pk=car.pk %}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-square"></i></a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="4" class="text-center py-4 text-muted">No cars added yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Customer Enquiries -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm rounded-4 bg-white h-100">
+                    <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold m-0 text-dark">Recent Enquiries</h5>
+                        <a href="{% url 'dealer_enquiry_list' %}" class="btn btn-sm btn-link text-decoration-none fw-bold">View All</a>
+                    </div>
+                    <div class="table-responsive px-3 pb-3">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light small">
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Car</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for enq in recent_enquiries %}
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold text-dark">{{ enq.name }}</div>
+                                            <small class="text-muted">{{ enq.phone }}</small>
+                                        </td>
+                                        <td>
+                                            {% if enq.car %}
+                                                <small class="fw-semibold">{{ enq.car.brand }} {{ enq.car.model }}</small>
+                                            {% else %}
+                                                <small class="text-muted">General</small>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if enq.status == 'New' %}
+                                                <span class="badge bg-danger">New</span>
+                                            {% elif enq.status == 'Contacted' %}
+                                                <span class="badge bg-warning text-dark">Contacted</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Closed</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'dealer_enquiry_detail' pk=enq.pk %}" class="btn btn-sm btn-outline-dark"><i class="bi bi-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr><td colspan="4" class="text-center py-4 text-muted">No enquiries received yet.</td></tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

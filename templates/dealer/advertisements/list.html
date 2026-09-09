@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Advertisements | Dealer Portal{% endblock %}
+
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="dealer-wrapper">
+    {% include 'components/sidebar.html' %}
+
+    <div class="dealer-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold text-dark m-0">Promotional Banners & Ads</h2>
+                <small class="text-muted">Manage homepage advertisement banners</small>
+            </div>
+            <a href="{% url 'dealer_ad_create' %}" class="btn btn-danger fw-bold shadow-sm">
+                <i class="bi bi-plus-lg me-1"></i> Add Advertisement
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Image</th>
+                            <th>Title & Subtitle</th>
+                            <th>Button & Link</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ad in ads %}
+                            <tr>
+                                <td style="width: 90px;">
+                                    {% if ad.image %}
+                                        <img src="{{ ad.image.url }}" class="rounded" style="width: 80px; height: 50px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="bg-secondary bg-opacity-25 rounded d-flex align-items-center justify-content-center text-muted" style="width: 80px; height: 50px;">
+                                            <i class="bi bi-megaphone"></i>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-dark fs-6">{{ ad.title }}</div>
+                                    <small class="text-muted">{{ ad.subtitle|default:"No subtitle" }}</small>
+                                </td>
+                                <td>
+                                    <small class="d-block fw-semibold">{{ ad.button_text }}</small>
+                                    <small class="text-muted text-truncate d-inline-block" style="max-width: 150px;">{{ ad.button_url|default:"#" }}</small>
+                                </td>
+                                <td><span class="badge bg-light text-dark border">{{ ad.display_order }}</span></td>
+                                <td>
+                                    {% if ad.active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'dealer_ad_edit' pk=ad.pk %}" class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                                        <a href="{% url 'dealer_ad_delete' pk=ad.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="bi bi-megaphone display-4 d-block mb-2"></i>
+                                    No advertisements created yet.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
