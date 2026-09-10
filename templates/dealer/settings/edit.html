@@ -53,24 +53,13 @@
                         <textarea name="about_text" class="form-control" rows="4" required>{{ dealer_settings_obj.about_text }}</textarea>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-12 col-md-8">
                         <label class="form-label fw-bold small">Upload Dealership Logo</label>
                         <input type="file" name="logo" accept="image/*" class="form-control">
                         {% if dealer_settings_obj.logo %}
                             <div class="mt-2">
                                 <small class="text-muted d-block">Current Logo:</small>
-                                <img src="{{ dealer_settings_obj.logo.url }}" class="img-thumbnail" style="height: 60px;">
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold small">Upload Dealer Photo (Yash Parmar)</label>
-                        <input type="file" name="dealer_image" accept="image/*" class="form-control">
-                        {% if dealer_settings_obj.dealer_image %}
-                            <div class="mt-2">
-                                <small class="text-muted d-block">Current Photo:</small>
-                                <img src="{{ dealer_settings_obj.dealer_image.url }}" class="img-thumbnail" style="height: 80px; object-fit: cover;">
+                                <img src="{{ dealer_settings_obj.logo.url }}" class="img-thumbnail bg-light" style="max-height: 80px;">
                             </div>
                         {% endif %}
                     </div>

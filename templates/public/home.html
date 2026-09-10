@@ -32,7 +32,7 @@
     <div class="search-card">
         <form method="GET" action="{% url 'public_cars' %}">
             <div class="row g-2 g-md-3">
-                <div class="col-6 col-md-4 col-lg-2">
+                <div class="col-12 col-md-4 col-lg-4">
                     <label class="form-label small fw-bold text-secondary">Brand</label>
                     <select name="brand" class="form-select form-select-sm">
                         <option value="">All Brands</option>
@@ -41,11 +41,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <label class="form-label small fw-bold text-secondary">Model</label>
-                    <input type="text" name="model" class="form-control form-control-sm" placeholder="e.g. Swift">
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
+                <div class="col-6 col-md-4 col-lg-3">
                     <label class="form-label small fw-bold text-secondary">Fuel Type</label>
                     <select name="fuel_type" class="form-select form-select-sm">
                         <option value="">Any Fuel</option>
@@ -56,22 +52,11 @@
                         <option value="Hybrid">Hybrid</option>
                     </select>
                 </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <label class="form-label small fw-bold text-secondary">Transmission</label>
-                    <select name="transmission" class="form-select form-select-sm">
-                        <option value="">Any Transmission</option>
-                        <option value="Manual">Manual</option>
-                        <option value="Automatic">Automatic</option>
-                        <option value="AMT">AMT</option>
-                        <option value="CVT">CVT</option>
-                        <option value="DCT">DCT</option>
-                    </select>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
+                <div class="col-6 col-md-4 col-lg-3">
                     <label class="form-label small fw-bold text-secondary">Max Price (₹)</label>
                     <input type="number" name="max_price" class="form-control form-control-sm" placeholder="e.g. 800000">
                 </div>
-                <div class="col-6 col-md-4 col-lg-2 d-flex align-items-end">
+                <div class="col-12 col-lg-2 d-flex align-items-end">
                     <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold py-2">
                         <i class="bi bi-search me-1"></i> Search
                     </button>
@@ -89,23 +74,23 @@
             {% for ad in active_ads %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
                     <div class="p-4 p-md-5 text-white" style="background: linear-gradient(90deg, #0f172a 0%, #1e3a8a 100%); min-height: 200px;">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
+                        <div class="row align-items-center justify-content-between g-3">
+                            <div class="col-md-7 col-lg-8">
                                 <h3 class="fw-bold mb-2">{{ ad.title }}</h3>
                                 {% if ad.subtitle %}
-                                    <p class="lead fs-6 mb-3 opacity-90">{{ ad.subtitle }}</p>
+                                    <p class="lead fs-6 mb-0 opacity-90">{{ ad.subtitle }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-5 col-lg-4 d-flex flex-column flex-sm-row align-items-center justify-content-md-end gap-3 text-center">
+                                {% if ad.image %}
+                                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="img-fluid rounded-3 shadow d-none d-md-block" style="max-height: 120px;">
                                 {% endif %}
                                 {% if ad.button_url %}
-                                    <a href="{{ ad.button_url }}" class="btn btn-light text-dark btn-sm fw-bold px-3 rounded-pill">
-                                        {{ ad.button_text|default:"View Offer" }} <i class="bi bi-arrow-right ms-1"></i>
+                                    <a href="{{ ad.button_url }}" class="btn btn-light text-dark fw-bold px-4 py-2 rounded-pill text-nowrap shadow-sm">
+                                        {{ ad.button_text|default:"Contact Dealer" }} <i class="bi bi-arrow-right ms-1"></i>
                                     </a>
                                 {% endif %}
                             </div>
-                            {% if ad.image %}
-                                <div class="col-md-4 text-center d-none d-md-block">
-                                    <img src="{{ ad.image.url }}" alt="{{ ad.title }}" class="img-fluid rounded-3 shadow" style="max-height: 160px;">
-                                </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -151,7 +136,7 @@
             <h4 class="fw-bold mt-3">No cars available right now.</h4>
             <p class="text-muted">Please check back soon or contact Sitaram Cars directly.</p>
             <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger fw-bold mt-2">
-                <i class="bi bi-telephone-fill me-1"></i> Call Yash Parmar
+                <i class="bi bi-telephone-fill me-1"></i> Call Dealer
             </a>
         </div>
     {% endif %}
@@ -202,7 +187,7 @@
                         <i class="bi bi-person-heart fs-4"></i>
                     </div>
                     <h6 class="fw-bold text-dark mb-1">Helpful Service</h6>
-                    <p class="text-muted small mb-0 d-none d-sm-block">Personal guidance from Yash Parmar.</p>
+                    <p class="text-muted small mb-0 d-none d-sm-block">Personal guidance and best deals.</p>
                 </div>
             </div>
         </div>
@@ -216,9 +201,11 @@
             <div class="col-lg-7">
                 <span class="badge bg-danger text-uppercase px-3 py-2 fw-bold mb-2">Owner & Founder</span>
                 <h2 class="display-6 fw-bold mb-1 fs-3">{{ dealer_settings.dealership_name }}</h2>
-                <h4 class="text-danger fw-bold mb-3 fs-5">{{ dealer_settings.contact_name }}</h4>
-                <p class="lead text-light mb-4 fs-6">
+                <p class="lead text-light mb-2 fs-6">
                     Contact us today for buying, selling, or evaluating certified pre-owned cars in Bhavnagar & Gujarat.
+                </p>
+                <p class="text-white-50 small mb-4">
+                    <i class="bi bi-geo-alt-fill text-danger me-1"></i> Opp. Gurukul, Akwada Lake, Ghogha Road, Akwada, Bhavnagar 364002
                 </p>
                 <div class="d-flex flex-wrap gap-2 gap-md-3">
                     <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
@@ -227,19 +214,22 @@
                     <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="btn btn-success btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
                         <i class="bi bi-whatsapp me-1"></i> WhatsApp
                     </a>
+                    <a href="https://www.google.com/maps/place/Sitaram+Cars+Bhavnagar/@21.7398745,72.1809918,17z/data=!3m1!4b1!4m6!3m5!1s0x395f5b006df8b537:0xc8fb4b44f2ccc4b9!8m2!3d21.7398745!4d72.1809918!16s%2Fg%2F11zyn57jtc?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
+                        <i class="bi bi-geo-alt-fill text-danger me-1"></i> Location Map
+                    </a>
                     <a href="{% url 'public_cars' %}" class="btn btn-outline-light btn-sm btn-md-lg fw-bold px-3 px-md-4 rounded-pill">
                         View Cars
                     </a>
                 </div>
             </div>
             <div class="col-lg-5 text-center mt-4 mt-lg-0">
-                {% if dealer_settings.dealer_image %}
-                    <img src="{{ dealer_settings.dealer_image.url }}" alt="{{ dealer_settings.contact_name }}" class="img-fluid rounded-4 shadow border border-3 border-danger" style="max-height: 240px; object-fit: cover;">
+                {% if dealer_settings.logo %}
+                    <img src="{{ dealer_settings.logo.url }}" alt="{{ dealer_settings.dealership_name }}" class="img-fluid rounded-4 shadow border border-3 border-danger bg-white p-3" style="max-height: 220px; max-width: 280px; object-fit: contain;">
                 {% else %}
                     <div class="p-3 p-md-4 rounded-4 bg-secondary bg-opacity-25 border border-secondary d-inline-block">
-                        <i class="bi bi-person-bounding-box display-3 text-danger"></i>
-                        <div class="fw-bold mt-2 fs-6">{{ dealer_settings.contact_name }}</div>
-                        <div class="text-muted small">{{ dealer_settings.dealership_name }}</div>
+                        <i class="bi bi-shield-check display-3 text-danger"></i>
+                        <div class="fw-bold mt-2 fs-6">{{ dealer_settings.dealership_name }}</div>
+                        <div class="text-muted small">Certified Pre-Owned Cars</div>
                     </div>
                 {% endif %}
             </div>

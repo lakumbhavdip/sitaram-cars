@@ -1,13 +1,16 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'public_home' %}">
+        <a class="navbar-brand d-flex align-items-center gap-2 py-0" href="{% url 'public_home' %}">
             {% if dealer_settings.logo %}
-                <img src="{{ dealer_settings.logo.url }}" alt="{{ dealer_settings.dealership_name }}" height="36" class="rounded">
+                <img src="{{ dealer_settings.logo.url }}" alt="{{ dealer_settings.dealership_name }}" height="38" class="rounded">
             {% else %}
                 <i class="bi bi-car-front-fill text-danger fs-3"></i>
             {% endif %}
-            <span>{{ dealer_settings.dealership_name }}</span>
+            <div class="d-flex flex-column text-start justify-content-center">
+                <span class="fw-bold fs-5 text-danger lh-1">{{ dealer_settings.dealership_name }}</span>
+                <span class="fst-italic text-end text-light opacity-75" style="font-size: 0.72rem; letter-spacing: 0.5px; font-weight: 400;">Buy & Sell Your Car</span>
+            </div>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

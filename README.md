@@ -101,11 +101,10 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Apply Database Migrations & Seed Data
+### 4. Apply Database Migrations
 ```bash
 python manage.py makemigrations
 python manage.py migrate
-python manage.py seed_data
 ```
 
 ### 5. Create Dealer Account

@@ -6,110 +6,119 @@
 {% block content %}
 <div class="bg-dark text-white py-5 mb-5 border-bottom border-danger border-3">
     <div class="container text-center">
-        <h1 class="display-5 fw-bold mb-2">Contact Sitaram Cars</h1>
-        <p class="lead text-light mb-0">Get in touch with Yash Parmar for inquiries, test drives, or car sales</p>
+        <h1 class="display-5 fw-bold mb-2">Contact {{ dealer_settings.dealership_name }}</h1>
+        <p class="lead text-light mb-0">Get in touch directly for vehicle inquiries, test drives, or car sales</p>
     </div>
 </div>
 
 <div class="container mb-5">
-    <div class="row g-5">
-        <!-- Contact Cards Column -->
-        <div class="col-lg-5">
-            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
-                <h4 class="fw-bold text-dark mb-3">Dealership Details</h4>
-
-                <div class="d-flex align-items-start gap-3 mb-3">
-                    <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-3">
-                        <i class="bi bi-person-fill fs-4"></i>
+    <div class="row justify-content-center">
+        <!-- Dealership Details -->
+        <div class="col-lg-10 col-xl-9">
+            <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white text-center mb-4">
+                {% if dealer_settings.logo %}
+                    <div class="mb-3">
+                        <img src="{{ dealer_settings.logo.url }}" alt="{{ dealer_settings.dealership_name }}" class="img-fluid" style="max-height: 90px; object-fit: contain;">
                     </div>
-                    <div>
-                        <div class="small text-muted">Contact Person</div>
-                        <div class="fw-bold fs-5 text-dark">{{ dealer_settings.contact_name }}</div>
-                        <div class="text-secondary small">{{ dealer_settings.dealership_name }}</div>
+                {% endif %}
+                <h2 class="fw-bold text-dark mb-2">{{ dealer_settings.dealership_name }}</h2>
+                <p class="text-muted mb-4">{{ dealer_settings.about_text }}</p>
+
+                <div class="row g-3 justify-content-center mb-4 text-start">
+                    <div class="col-md-6 col-lg-3 col-sm-6">
+                        <div class="p-4 bg-light rounded-4 border h-100 d-flex flex-column align-items-center text-center">
+                            <div class="bg-danger bg-opacity-10 text-danger p-3 rounded-circle mb-3">
+                                <i class="bi bi-telephone-fill fs-3"></i>
+                            </div>
+                            <div class="small text-muted fw-bold text-uppercase">Call Directly</div>
+                            <a href="tel:{{ dealer_settings.phone }}" class="fw-bold fs-5 text-dark text-decoration-none my-2">
+                                {{ dealer_settings.phone }}
+                            </a>
+                            <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger btn-sm fw-bold rounded-pill px-4 mt-auto">
+                                <i class="bi bi-telephone-fill me-1"></i> Call Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 col-sm-6">
+                        <div class="p-4 bg-light rounded-4 border h-100 d-flex flex-column align-items-center text-center">
+                            <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle mb-3">
+                                <i class="bi bi-whatsapp fs-3"></i>
+                            </div>
+                            <div class="small text-muted fw-bold text-uppercase">WhatsApp Support</div>
+                            <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="fw-bold fs-5 text-dark text-decoration-none my-2">
+                                {{ dealer_settings.whatsapp_number }}
+                            </a>
+                            <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="btn btn-success btn-sm fw-bold rounded-pill px-4 mt-auto">
+                                <i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 col-sm-6">
+                        <div class="p-4 bg-light rounded-4 border h-100 d-flex flex-column align-items-center text-center">
+                            <div class="p-3 rounded-circle mb-3 text-white shadow-sm" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+                                <i class="bi bi-instagram fs-4"></i>
+                            </div>
+                            <div class="small text-muted fw-bold text-uppercase">Instagram Page</div>
+                            <a href="https://www.instagram.com/sitaram_car_bhavnagar/" target="_blank" rel="noopener noreferrer" class="fw-bold fs-6 text-dark text-decoration-none my-2 text-truncate" style="max-width: 100%;">
+                                @sitaram_car_bhavnagar
+                            </a>
+                            <a href="https://www.instagram.com/sitaram_car_bhavnagar/" target="_blank" rel="noopener noreferrer" class="btn btn-sm fw-bold rounded-pill px-4 mt-auto text-white shadow-sm" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);">
+                                <i class="bi bi-instagram me-1"></i> Follow Us
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3 col-sm-6">
+                        <div class="p-4 bg-light rounded-4 border h-100 d-flex flex-column align-items-center text-center">
+                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle mb-3">
+                                <i class="bi bi-geo-alt-fill fs-3"></i>
+                            </div>
+                            <div class="small text-muted fw-bold text-uppercase">Dealership Address</div>
+                            <div class="fw-semibold small text-dark my-2" style="font-size: 0.8rem;">
+                                <strong>Sitaram Cars</strong><br>
+                                Opp. Gurukul, Akwada Lake,<br>
+                                Ghogha Road, Akwada 364002
+                            </div>
+                            <a href="https://www.google.com/maps/place/Sitaram+Cars+Bhavnagar/@21.7398745,72.1809918,17z/data=!3m1!4b1!4m6!3m5!1s0x395f5b006df8b537:0xc8fb4b44f2ccc4b9!8m2!3d21.7398745!4d72.1809918!16s%2Fg%2F11zyn57jtc?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm fw-bold rounded-pill px-4 mt-auto">
+                                <i class="bi bi-map me-1"></i> Directions
+                            </a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="d-flex align-items-start gap-3 mb-3">
-                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3">
-                        <i class="bi bi-telephone-fill fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="small text-muted">Phone Number</div>
-                        <a href="tel:{{ dealer_settings.phone }}" class="fw-bold fs-5 text-primary text-decoration-none">
-                            {{ dealer_settings.phone }}
-                        </a>
-                    </div>
-                </div>
-
-                <div class="d-flex align-items-start gap-3">
-                    <div class="bg-success bg-opacity-10 text-success p-3 rounded-3">
-                        <i class="bi bi-whatsapp fs-4"></i>
-                    </div>
-                    <div>
-                        <div class="small text-muted">WhatsApp Support</div>
-                        <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="fw-bold fs-5 text-success text-decoration-none">
-                            {{ dealer_settings.whatsapp_number }}
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'public_cars' %}" class="btn btn-danger fw-bold rounded-pill px-5 py-2 shadow-sm">
+                        <i class="bi bi-car-front me-1"></i> View Available Cars
+                    </a>
                 </div>
             </div>
 
-            <div class="p-4 bg-dark text-white rounded-4 shadow-sm">
-                <h5 class="fw-bold mb-2">Prefer to Talk Directly?</h5>
-                <p class="small text-secondary mb-3">Call Yash Parmar directly to ask about any car or get instant cash offers for your current car.</p>
-                <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger w-100 fw-bold py-2">
-                    <i class="bi bi-telephone-fill me-2"></i> Call {{ dealer_settings.phone }}
-                </a>
-            </div>
-        </div>
-
-        <!-- Contact Form Column (NO forms.py) -->
-        <div class="col-lg-7">
-            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-                <h4 class="fw-bold text-dark mb-1">Send an Enquiry</h4>
-                <p class="text-muted small mb-4">Please fill out the form below. We will get back to you as soon as possible.</p>
-
-                <form method="POST" action="{% url 'public_contact' %}">
-                    {% csrf_token %}
-
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" value="{{ old_data.name|default:'' }}" class="form-control" required placeholder="Your Full Name">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">Phone <span class="text-danger">*</span></label>
-                            <input type="text" name="phone" value="{{ old_data.phone|default:'' }}" class="form-control" required placeholder="10-digit mobile number">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">Email</label>
-                            <input type="email" name="email" value="{{ old_data.email|default:'' }}" class="form-control" placeholder="Optional email address">
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">Select Car (Optional)</label>
-                            <select name="car" class="form-select">
-                                <option value="">-- General Inquiry --</option>
-                                {% for c in cars %}
-                                    <option value="{{ c.id }}">{{ c.brand }} {{ c.model }} ({{ c.year }}) - ₹{{ c.price|floatformat:0 }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="col-12">
-                            <label class="form-label fw-bold small">Message <span class="text-danger">*</span></label>
-                            <textarea name="message" class="form-control" rows="4" required placeholder="Tell us how we can help you...">{{ old_data.message|default:'' }}</textarea>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-danger btn-lg w-100 fw-bold py-3 mt-2 shadow-sm">
-                                <i class="bi bi-send-fill me-2"></i> Send Enquiry
-                            </button>
+            <!-- Interactive Google Map Section -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4 bg-white">
+                <div class="p-3 bg-light border-bottom d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-geo-alt-fill text-danger fs-5"></i>
+                        <div>
+                            <span class="fw-bold text-dark">Find Us on Google Maps:</span>
+                            <span class="text-secondary small ms-1">Sitaram Cars, Opp. Gurukul, Akwada, Bhavnagar, Gujarat 364002</span>
                         </div>
                     </div>
-                </form>
+                    <a href="https://www.google.com/maps/place/Sitaram+Cars+Bhavnagar/@21.7398745,72.1809918,17z/data=!3m1!4b1!4m6!3m5!1s0x395f5b006df8b537:0xc8fb4b44f2ccc4b9!8m2!3d21.7398745!4d72.1809918!16s%2Fg%2F11zyn57jtc?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn btn-danger btn-sm rounded-pill fw-bold text-nowrap px-3">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Open in Google Maps
+                    </a>
+                </div>
+                <div class="ratio" style="--bs-aspect-ratio: 42%; min-height: 380px;">
+                    <iframe 
+                        src="https://maps.google.com/maps?q=21.7398745,72.1809918+(Sitaram%20Cars%20Bhavnagar)&t=&z=17&ie=UTF8&iwloc=B&output=embed" 
+                        style="border:0; width: 100%; height: 100%;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Sitaram Cars Bhavnagar Location">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>

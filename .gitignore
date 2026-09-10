@@ -8,6 +8,9 @@ env/
 venv/
 ENV/
 .env
+pyc
+.cpython-313.pyc
+*.pyc
 
 # Django
 *.log
@@ -21,3 +24,4 @@ staticfiles/
 Thumbs.db
 .vscode/
 .idea/
+

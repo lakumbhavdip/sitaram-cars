@@ -31,22 +31,62 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex gap-3">
-                <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger btn-lg fw-bold px-4 rounded-pill">
-                    <i class="bi bi-telephone-fill me-2"></i> Call {{ dealer_settings.phone }}
-                </a>
-                <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="btn btn-success btn-lg fw-bold px-4 rounded-pill">
-                    <i class="bi bi-whatsapp me-2"></i> WhatsApp
-                </a>
+            <!-- Action Boxes: Call, WhatsApp, Instagram -->
+            <div class="row g-2 g-md-3 my-3">
+                <div class="col-4">
+                    <a href="tel:{{ dealer_settings.phone }}" class="text-decoration-none text-dark">
+                        <div class="p-3 bg-white rounded-4 border shadow-sm text-center h-100">
+                            <div class="bg-danger bg-opacity-10 text-danger rounded-circle p-2 mx-auto mb-2 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                                <i class="bi bi-telephone-fill fs-5"></i>
+                            </div>
+                            <div class="fw-bold small">Call Us</div>
+                            <div class="text-danger small fw-semibold mt-1">Call Now &rarr;</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="text-decoration-none text-dark">
+                        <div class="p-3 bg-white rounded-4 border shadow-sm text-center h-100">
+                            <div class="bg-success bg-opacity-10 text-success rounded-circle p-2 mx-auto mb-2 d-inline-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                                <i class="bi bi-whatsapp fs-5"></i>
+                            </div>
+                            <div class="fw-bold small">WhatsApp</div>
+                            <div class="text-success small fw-semibold mt-1">Chat Now &rarr;</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a href="https://www.instagram.com/sitaram_car_bhavnagar/" target="_blank" rel="noopener noreferrer" class="text-decoration-none text-dark">
+                        <div class="p-3 bg-white rounded-4 border shadow-sm text-center h-100">
+                            <div class="rounded-circle p-2 mx-auto mb-2 text-white shadow-sm d-inline-flex align-items-center justify-content-center" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); width: 44px; height: 44px;">
+                                <i class="bi bi-instagram fs-5"></i>
+                            </div>
+                            <div class="fw-bold small">Instagram</div>
+                            <div class="small fw-semibold mt-1" style="color: #bc1888;">Follow Us &rarr;</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-4 text-secondary small d-flex align-items-start gap-2">
+                <i class="bi bi-geo-alt-fill text-danger fs-5"></i>
+                <div>
+                    <strong>Dealership Location:</strong><br>
+                    Opposite Gurukul, Akwada Lake, Ghogha Road, Akwada, Bhavnagar 364002
+                    <br>
+                    <a href="https://www.google.com/maps/place/Sitaram+Cars+Bhavnagar/@21.7398745,72.1809918,17z/data=!3m1!4b1!4m6!3m5!1s0x395f5b006df8b537:0xc8fb4b44f2ccc4b9!8m2!3d21.7398745!4d72.1809918!16s%2Fg%2F11zyn57jtc?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="text-danger fw-semibold text-decoration-none">
+                        <i class="bi bi-map me-1"></i> Open in Google Maps
+                    </a>
+                </div>
             </div>
         </div>
 
         <div class="col-lg-6 text-center">
-            {% if dealer_settings.dealer_image %}
-                <img src="{{ dealer_settings.dealer_image.url }}" alt="{{ dealer_settings.contact_name }}" class="img-fluid rounded-4 shadow-lg border border-4 border-white">
+            {% if dealer_settings.logo %}
+                <img src="{{ dealer_settings.logo.url }}" alt="{{ dealer_settings.dealership_name }}" class="img-fluid rounded-4 shadow-lg border border-4 border-white bg-white p-3" style="max-height: 280px; object-fit: contain;">
             {% else %}
                 <div class="p-5 bg-white rounded-4 shadow-sm border border-secondary border-opacity-10 text-center">
-                    <i class="bi bi-building-fill-gear display-1 text-danger"></i>
+                    <i class="bi bi-car-front-fill display-1 text-danger"></i>
                     <h3 class="fw-bold text-dark mt-3">{{ dealer_settings.dealership_name }}</h3>
                     <p class="text-muted">Serving happy car buyers with verified vehicles</p>
                 </div>

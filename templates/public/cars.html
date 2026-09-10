@@ -49,11 +49,6 @@
                             </select>
                         </div>
 
-                        <!-- Model -->
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-secondary">Model</label>
-                            <input type="text" name="model" value="{{ selected_model }}" class="form-control form-control-sm" placeholder="e.g. Swift">
-                        </div>
 
                         <!-- Fuel Type -->
                         <div class="mb-3">
@@ -68,18 +63,6 @@
                             </select>
                         </div>
 
-                        <!-- Transmission -->
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-secondary">Transmission</label>
-                            <select name="transmission" class="form-select form-select-sm">
-                                <option value="">Any Transmission</option>
-                                <option value="Manual" {% if selected_transmission == 'Manual' %}selected{% endif %}>Manual</option>
-                                <option value="Automatic" {% if selected_transmission == 'Automatic' %}selected{% endif %}>Automatic</option>
-                                <option value="AMT" {% if selected_transmission == 'AMT' %}selected{% endif %}>AMT</option>
-                                <option value="CVT" {% if selected_transmission == 'CVT' %}selected{% endif %}>CVT</option>
-                                <option value="DCT" {% if selected_transmission == 'DCT' %}selected{% endif %}>DCT</option>
-                            </select>
-                        </div>
 
                         <!-- Price Range -->
                         <div class="mb-3">
@@ -140,7 +123,7 @@
                     <div class="d-flex justify-content-center gap-2 mt-3">
                         <a href="{% url 'public_cars' %}" class="btn btn-outline-secondary fw-bold">Reset Filters</a>
                         <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger fw-bold">
-                            <i class="bi bi-telephone-fill me-1"></i> Call Yash Parmar
+                            <i class="bi bi-telephone-fill me-1"></i> Call Dealer
                         </a>
                     </div>
                 </div>

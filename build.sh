@@ -8,13 +8,10 @@ pip install -r requirements.txt
 # Collect static files for WhiteNoise
 python manage.py collectstatic --no-input
 
-# Apply database migrations
+# Apply database migrations (safe and non-destructive)
 python manage.py migrate
 
-# Seed dealership settings and sample cars (safe: checks if exist)
-python manage.py seed_data
-
-# Optional: Auto-create dealer superuser if env vars are provided
+# Optional: Auto-create dealer superuser only if credentials are provided and user does not exist
 if [ -n "$DEALER_USERNAME" ] && [ -n "$DEALER_PASSWORD" ]; then
     python manage.py create_dealer
 fi

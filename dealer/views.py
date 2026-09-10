@@ -555,17 +555,11 @@ def dealer_settings_edit(request):
         about_text = request.POST.get('about_text', '').strip()
 
         logo = request.FILES.get('logo')
-        dealer_image = request.FILES.get('dealer_image')
 
         if logo:
             valid, img_err = validate_image_file(logo)
             if valid:
                 settings_obj.logo = logo
-
-        if dealer_image:
-            valid, img_err = validate_image_file(dealer_image)
-            if valid:
-                settings_obj.dealer_image = dealer_image
 
         settings_obj.dealership_name = dealership_name
         settings_obj.contact_name = contact_name

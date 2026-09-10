@@ -8,11 +8,14 @@
                 <p class="text-secondary small mb-3">
                     {{ dealer_settings.about_text }}
                 </p>
-                <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 d-inline-block">
-                    <div class="fw-bold text-white small">Contact Person:</div>
-                    <div class="text-white">{{ dealer_settings.contact_name }}</div>
-                    <div class="text-danger fw-bold mt-1">
-                        <i class="bi bi-telephone-fill me-1"></i> {{ dealer_settings.phone }}
+                <div class="d-flex align-items-start gap-2 text-secondary small">
+                    <i class="bi bi-geo-alt-fill text-danger mt-1"></i>
+                    <div>
+                        <span>Opposite Gurukul, Akwada Lake,<br>Ghogha Road, Akwada, Bhavnagar 364002</span>
+                        <br>
+                        <a href="https://www.google.com/maps/place/Sitaram+Cars+Bhavnagar/@21.7398745,72.1809918,17z/data=!3m1!4b1!4m6!3m5!1s0x395f5b006df8b537:0xc8fb4b44f2ccc4b9!8m2!3d21.7398745!4d72.1809918!16s%2Fg%2F11zyn57jtc?entry=ttu&g_ep=EgoyMDI2MDkwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="text-danger text-decoration-none fw-semibold">
+                            <i class="bi bi-map me-1"></i> View on Google Maps
+                        </a>
                     </div>
                 </div>
             </div>
@@ -30,14 +33,17 @@
             <div class="col-lg-4 col-md-12">
                 <h5 class="text-white mb-3">Contact Dealer</h5>
                 <p class="text-secondary small">
-                    For inquiries, vehicle details, test drives, or selling your car, reach out directly to Yash Parmar.
+                    For inquiries, vehicle details, test drives, or selling your car, reach out directly to {{ dealer_settings.dealership_name }}.
                 </p>
-                <div class="d-grid gap-2 d-sm-flex">
+                <div class="d-flex flex-wrap gap-2">
                     <a href="tel:{{ dealer_settings.phone }}" class="btn btn-danger btn-sm fw-bold px-3">
                         <i class="bi bi-telephone-fill me-1"></i> Call Now
                     </a>
                     <a href="https://wa.me/{{ dealer_settings.whatsapp_number }}" target="_blank" class="btn btn-success btn-sm fw-bold px-3">
                         <i class="bi bi-whatsapp me-1"></i> WhatsApp
+                    </a>
+                    <a href="https://www.instagram.com/sitaram_car_bhavnagar/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-light btn-sm fw-bold px-3" title="Instagram">
+                        <i class="bi bi-instagram text-danger me-1"></i> Instagram
                     </a>
                 </div>
             </div>
@@ -47,7 +53,11 @@
 
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center small text-secondary">
             <div>&copy; {% now "Y" %} {{ dealer_settings.dealership_name }}. All rights reserved.</div>
-            <div class="mt-2 mt-sm-0">
+            <div class="mt-2 mt-sm-0 d-flex align-items-center gap-3">
+                <a href="https://www.instagram.com/sitaram_car_bhavnagar/" target="_blank" rel="noopener noreferrer" class="text-secondary text-decoration-none d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-instagram text-danger"></i> @sitaram_car_bhavnagar
+                </a>
+                <span class="text-secondary opacity-25">|</span>
                 <a href="{% url 'dealer_login' %}" class="text-secondary text-decoration-none">Dealer Admin Access</a>
             </div>
         </div>

@@ -1,10 +1,11 @@
 import os
+import sys
 import getpass
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 
 class Command(BaseCommand):
-    help = 'Create a dealer user account for managing Sitaram Cars (supports interactive, args, or env vars).'
+    help = 'Create a dealer superuser account for managing Sitaram Cars (supports env vars, args, or interactive).'
 
     def add_arguments(self, parser):
         parser.add_argument('--username', type=str, help='Dealer username')
@@ -17,13 +18,20 @@ class Command(BaseCommand):
 
         if username and password:
             if User.objects.filter(username=username).exists():
-                self.stdout.write(self.style.WARNING(f'Dealer user "{username}" already exists.'))
+                self.stdout.write(self.style.WARNING(f'Dealer user "{username}" already exists. Skipping creation to protect existing data.'))
                 return
-            User.objects.create_superuser(username=username, email='', password=password)
-            self.stdout.write(self.style.SUCCESS(f'Dealer user "{username}" successfully created!'))
+            user = User.objects.create_superuser(username=username, email='', password=password)
+            user.is_staff = True
+            user.is_superuser = True
+            user.save()
+            self.stdout.write(self.style.SUCCESS(f'Dealer user "{username}" successfully created with full management permissions!'))
             return
 
-        # 2. Interactive CLI fallback
+        # 2. Interactive CLI fallback (only if running in an interactive terminal)
+        if not sys.stdin.isatty():
+            self.stdout.write(self.style.WARNING('Non-interactive environment detected without credentials. Skipping dealer creation.'))
+            return
+
         self.stdout.write(self.style.SUCCESS('=== Create Dealer Account ==='))
         
         while True:
@@ -47,5 +55,8 @@ class Command(BaseCommand):
                 continue
             break
 
-        User.objects.create_superuser(username=username, email='', password=password)
-        self.stdout.write(self.style.SUCCESS(f'\nDealer user "{username}" successfully created!'))
+        user = User.objects.create_superuser(username=username, email='', password=password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        self.stdout.write(self.style.SUCCESS(f'\nDealer user "{username}" successfully created with full management permissions!'))
